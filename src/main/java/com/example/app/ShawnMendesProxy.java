@@ -10,8 +10,8 @@ public interface ShawnMendesProxy {
 
     // GET https://itunes.apple.com/search?term=shawnmendes&limit=1
     @GetMapping("/search")
-    String makeSearchRequest(
+    ShawnMendesResponse makeSearchRequest(
             @RequestParam("term") String term,
-            @RequestParam("term") Integer limit
+            @RequestParam("limit") Integer limit
     );
 }
