@@ -1,9 +1,13 @@
 package com.example.app;
 
+import com.example.app.itunes.ItunesProxy;
+import com.example.app.itunes.ItunesResponse;
+import com.example.app.itunes.ItunesResult;
+import com.example.app.sampleshawnmendesserver.SampleServerShawnMendesResponse;
+import com.example.app.sampleshawnmendesserver.SampleShawnMendesServerProxy;
 import feign.FeignException;
 import feign.RetryableException;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,7 +24,9 @@ import java.util.List;
 public class AppApplication {
 
 	@Autowired
-	ShawnMendesProxy shawnMendesClient;
+    ItunesProxy itunesClient;
+    @Autowired
+    SampleShawnMendesServerProxy sampleShawnMendesServerClient;
 
     //Logger log = getLogger(AppApplication.class);
 
@@ -29,14 +35,12 @@ public class AppApplication {
 	}
 
 	@EventListener(ApplicationStartedEvent.class)
-	public void makeRequestToShawnMendesEndpoint(){
+	public void run(){
         try {
-            ShawnMendesResponse response = shawnMendesClient.makeSearchRequest("shawnmendes", 5);
-            //System.out.println(response);
-            List<ShawnMendesResult> results = response.results();
-            results.forEach(
-                    shawnMendesResult -> System.out.println(shawnMendesResult.trackName())
-            );
+            //ItunesResponse response = itunesClient.makeSearchRequest("shawnmendes", 5);
+            SampleServerShawnMendesResponse response = sampleShawnMendesServerClient.fetchAllSongs("id1");
+            log.info(response);
+
         } catch (FeignException.FeignClientException feignException) {
             //System.out.println("client exception: " + feignException.status());
             log.error("client exception: " + feignException.status());
