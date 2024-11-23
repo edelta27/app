@@ -23,25 +23,22 @@ import java.util.List;
 @EnableFeignClients
 @Log4j2
 public class AppApplication {
-
 	@Autowired
     ItunesProxy itunesClient;
     @Autowired
     SampleShawnMendesServerProxy sampleShawnMendesServerClient;
-
     //Logger log = getLogger(AppApplication.class);
-
 	public static void main(String[] args) {
 		SpringApplication.run(AppApplication.class, args);
 	}
-
 	@EventListener(ApplicationStartedEvent.class)
 	public void run(){
         try {
             //ItunesResponse response = itunesClient.makeSearchRequest("shawnmendes", 5);
             log.info(sampleShawnMendesServerClient.fetchAllSongs("id1"));
-            log.info(sampleShawnMendesServerClient.addSongs(new SampleServerShawnMendesRequest("In my Blood")));
-            log.info(sampleShawnMendesServerClient.addSongs(new SampleServerShawnMendesRequest("Stitches")));
+            sampleShawnMendesServerClient.deleteByPathVariableId("0");
+            //log.info(sampleShawnMendesServerClient.addSongs(new SampleServerShawnMendesRequest("In my Blood")));
+            //log.info(sampleShawnMendesServerClient.addSongs(new SampleServerShawnMendesRequest("Stitches")));
             log.info(sampleShawnMendesServerClient.fetchAllSongs("id2"));
         } catch (FeignException.FeignClientException feignException) {
             //System.out.println("client exception: " + feignException.status());
